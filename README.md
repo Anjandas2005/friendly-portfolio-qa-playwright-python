@@ -6,6 +6,7 @@ Comprehensive end-to-end (E2E) automated test framework built with **Python**, *
 
 ## 🚀 Features
 
+- **Comprehensive Test Case Wiki:** Full scenario-by-scenario documentation, traceability matrix, and assertions cataloged in [`TEST_CASES_WIKI.md`](TEST_CASES_WIKI.md).
 - **Page Object Model (POM):** Decoupled, modular architecture separating test logic from page locators and user interactions.
 - **Cross-Browser Ready:** Out-of-the-box support for Chromium, Firefox, and WebKit (Safari).
 - **Responsive Testing:** Automated viewport validations across Desktop (1920×1080), Tablet (768×1024), and Mobile (390×844 & 375×667) ensuring zero horizontal overflow.
