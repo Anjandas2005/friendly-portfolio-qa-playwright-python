@@ -1,0 +1,48 @@
+name: Playwright Portfolio E2E Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Playwright Tests & Generate Reports
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Playwright Browsers with OS Dependencies
+        run: playwright install --with-deps chromium firefox
+
+      - name: Run Playwright Test Suite
+        env:
+          BASE_URL: https://myportfolio-virid-nine-58.vercel.app
+        run: |
+          pytest -n auto
+
+      - name: Upload HTML Test Report & Failure Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-execution-reports
+          path: |
+            reports/
+            test-results/
+          retention-days: 30
+
