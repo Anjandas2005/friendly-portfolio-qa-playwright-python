@@ -160,13 +160,26 @@ When a test fails, Playwright automatically captures:
 
 ---
 
-## 🔄 CI/CD Workflow (GitHub Actions)
+## 🔄 CI/CD Workflow & Scheduled Email Delivery (GitHub Actions)
 
 A pre-configured GitHub Actions workflow is located at `.github/workflows/playwright.yml`. It:
-1. Runs on every push and pull request to `main` / `master`.
-2. Sets up Python and installs all dependencies and Playwright browsers.
-3. Executes the full test suite in parallel.
-4. Archives and uploads HTML reports and failure artifacts (`reports/` and `test-results/`) for download.
+1. **Daily Execution at 6:00 AM IST:** Automated cron schedule (`cron: '30 0 * * *'`) runs every morning at 06:00 AM IST (00:30 UTC).
+2. **Push & Pull Request Triggers:** Also runs automatically on every push and pull request to `main` / `master`.
+3. **Manual Trigger (`workflow_dispatch`):** Allows on-demand execution via GitHub Actions web console.
+4. **Environment Setup:** Provisions Python 3.11 and installs Playwright browsers (Chromium & Firefox).
+5. **Parallel Test Suite Execution:** Runs the full Playwright suite across multiple worker threads (`pytest -n auto`).
+6. **Artifact Archiving:** Uploads test reports and failure traces to GitHub run artifacts (`reports/` and `test-results/`).
+7. **Automated Email Dispatch:** Emails the generated self-contained HTML test report directly to **`anjan.das.dev@zohomail.in`**.
+
+### ⚙️ Setting Up Email Secrets on GitHub
+To enable the workflow to send emails from your Zoho account:
+1. Navigate to your GitHub repository -> **Settings** -> **Secrets and variables** -> **Actions**.
+2. Click **New repository secret** and add the following:
+   - `MAIL_USERNAME`: Your Zoho Mail email address (e.g. `anjan.das.dev@zohomail.in`).
+   - `MAIL_PASSWORD`: Your Zoho Mail **App Password** (generated from Zoho Account Security -> App Passwords).
+   - *(Optional)* `MAIL_SERVER`: `smtp.zoho.in` (defaulted in workflow).
+   - *(Optional)* `MAIL_PORT`: `465` (defaulted in workflow).
+   - *(Optional)* `MAIL_FROM`: Custom sender name (e.g. `Playwright QA Bot <anjan.das.dev@zohomail.in>`).
 
 ---
 
